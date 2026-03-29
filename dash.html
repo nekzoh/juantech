@@ -1,492 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Overview</title>
-  <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
-
-    :root {
-      --bg: #0f0f13;
-      --s1: #1a1a24;
-      --s2: #24243a;
-      --ac: #7c5cfc;
-      --ac2: #a78bfa;
-      --acg: #7c5cfc66;
-      --red: #f43f5e;
-      --redg: #f43f5e66;
-      --grn: #22c55e;
-      --grng: #22c55e66;
-      --txt: #e2e2f0;
-      --dim: #8888a8;
-      --r: 12px;
-    }
-
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--txt);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      user-select: none
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      background: linear-gradient(135deg, var(--ac2), var(--ac));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent
-    }
-
-    .sub {
-      color: var(--dim);
-      font-size: .82rem;
-      margin-bottom: 28px
-    }
-
-    .card {
-      background: var(--s1);
-      border: 1px solid #2a2a3e;
-      border-radius: var(--r);
-      padding: 28px;
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px
-    }
-
-    .conn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: .75rem;
-      color: var(--dim)
-    }
-
-    .conn-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--red);
-      transition: .3s
-    }
-
-    .conn-dot.ok {
-      background: var(--grn);
-      box-shadow: 0 0 6px var(--grng)
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      text-align: center
-    }
-
-    .sb {
-      background: var(--s2);
-      border-radius: 8px;
-      padding: 14px 6px
-    }
-
-    .sb .l {
-      font-size: .68rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--dim);
-      margin-bottom: 2px
-    }
-
-    .sb .v {
-      font-size: 1.45rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums
-    }
-
-    .sb .v.ac {
-      color: var(--ac2)
-    }
-
-    .sb .v.gr {
-      color: var(--grn)
-    }
-
-    .cg {
-      display: flex;
-      flex-direction: column;
-      gap: 5px
-    }
-
-    .cg .row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between
-    }
-
-    .cg label {
-      font-size: .78rem;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: .7px
-    }
-
-    .cg .hint {
-      font-size: .75rem;
-      color: var(--dim)
-    }
-
-    input[type=range] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 6px;
-      border-radius: 3px;
-      background: var(--s2);
-      outline: none;
-      margin-top: 3px
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--ac);
-      cursor: pointer;
-      box-shadow: 0 0 10px var(--acg);
-      transition: .15s
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 8px
-    }
-
-    .chip {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #2a2a3e;
-      background: var(--s2);
-      color: var(--dim);
-      font-size: .78rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .2s;
-      text-align: center
-    }
-
-    .chip.on {
-      border-color: var(--ac);
-      background: #7c5cfc22;
-      color: var(--ac2)
-    }
-
-    .hk-row {
-      display: flex;
-      align-items: center;
-      gap: 12px
-    }
-
-    .hk-key {
-      background: var(--s2);
-      border: 1px solid #2a2a3e;
-      border-radius: 6px;
-      padding: 6px 14px;
-      font-size: .85rem;
-      font-weight: 700;
-      color: var(--ac2);
-      min-width: 48px;
-      text-align: center
-    }
-
-    .hk-key.listen {
-      border-color: var(--ac);
-      animation: pulse .9s infinite
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        box-shadow: 0 0 0 0 var(--acg)
-      }
-
-      50% {
-        box-shadow: 0 0 0 6px transparent
-      }
-    }
-
-    .link-btn {
-      font-size: .75rem;
-      color: var(--ac);
-      cursor: pointer;
-      border: none;
-      background: none;
-      text-decoration: underline
-    }
-
-    .big {
-      width: 100%;
-      padding: 16px;
-      border-radius: var(--r);
-      border: 2px solid var(--ac);
-      background: linear-gradient(135deg, #7c5cfc22, #7c5cfc0a);
-      color: var(--ac2);
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: .25s;
-      text-transform: uppercase
-    }
-
-    .big.on {
-      border-color: var(--red);
-      color: var(--red)
-    }
-
-    .st {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: .8rem;
-      color: var(--dim)
-    }
-
-    .st-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--dim)
-    }
-
-    .st-dot.on {
-      background: var(--grn);
-      animation: blink .8s infinite
-    }
-
-    @keyframes blink {
-
-      0%,
-      100% {
-        opacity: 1
-      }
-
-      50% {
-        opacity: .4
-      }
-    }
-
-    .viz {
-      position: relative;
-      height: 110px;
-      background: var(--s2);
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #2a2a3e
-    }
-
-    .viz-label {
-      color: var(--dim);
-      font-size: .72rem
-    }
-
-    .rip {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--ac);
-      opacity: .6;
-      animation: rip .55s ease-out forwards
-    }
-
-    @keyframes rip {
-      0% {
-        transform: scale(.5);
-        opacity: .7
-      }
-
-      100% {
-        transform: scale(3);
-        opacity: 0
-      }
-    }
-
-    .sm {
-      background: none;
-      border: 1px solid #2a2a3e;
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: var(--dim);
-      font-size: .73rem;
-      cursor: pointer;
-      transition: .2s
-    }
-
-    .sm:hover {
-      border-color: var(--ac);
-      color: var(--txt)
-    }
-
-    .bottom-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap
-    }
-
-    .footer {
-      margin-top: 18px;
-      font-size: .68rem;
-      color: var(--dim)
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard &#8212; Overview</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f13;--s1:#1a1a24;--s2:#24243a;--ac:#7c5cfc;--ac2:#a78bfa;--acg:#7c5cfc66;--red:#f43f5e;--redg:#f43f5e66;--grn:#22c55e;--grng:#22c55e66;--ylw:#eab308;--txt:#e2e2f0;--dim:#8888a8;--r:12px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;user-select:none}
+h1{font-size:2rem;font-weight:700;margin-bottom:4px;background:linear-gradient(135deg,var(--ac2),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.82rem;margin-bottom:28px}
+.card{background:var(--s1);border:1px solid #2a2a3e;border-radius:var(--r);padding:28px;width:100%;max-width:520px;display:flex;flex-direction:column;gap:22px}
+.conn{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.75rem;color:var(--dim)}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:var(--red);transition:.3s}
+.conn-dot.ok{background:var(--grn);box-shadow:0 0 6px var(--grng)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;text-align:center}
+.sb{background:var(--s2);border-radius:8px;padding:14px 6px}
+.sb .l{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:2px}
+.sb .v{font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums}
+.sb .v.ac{color:var(--ac2)}
+.sb .v.gr{color:var(--grn)}
+.sb .v.yl{color:var(--ylw)}
+.cg{display:flex;flex-direction:column;gap:5px}
+.cg .row{display:flex;align-items:center;justify-content:space-between}
+.cg label{font-size:.78rem;color:var(--dim);text-transform:uppercase;letter-spacing:.7px}
+.cg .hint{font-size:.75rem;color:var(--dim)}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:var(--s2);outline:none;margin-top:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--ac);cursor:pointer;box-shadow:0 0 10px var(--acg);transition:.15s}
+.range-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hk-row{display:flex;align-items:center;gap:12px}
+.hk-key{background:var(--s2);border:1px solid #2a2a3e;border-radius:6px;padding:6px 14px;font-size:.85rem;font-weight:700;color:var(--ac2);min-width:48px;text-align:center}
+.hk-key.listen{border-color:var(--ac);animation:pulse .9s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--acg)}50%{box-shadow:0 0 0 6px transparent}}
+.link-btn{font-size:.75rem;color:var(--ac);cursor:pointer;border:none;background:none;text-decoration:underline}
+.big{width:100%;padding:16px;border-radius:var(--r);border:2px solid var(--ac);background:linear-gradient(135deg,#7c5cfc22,#7c5cfc0a);color:var(--ac2);font-size:1.1rem;font-weight:700;cursor:pointer;transition:.25s;text-transform:uppercase}
+.big.on{border-color:var(--red);color:var(--red)}
+.st{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.8rem;color:var(--dim)}
+.st-dot{width:8px;height:8px;border-radius:50%;background:var(--dim)}
+.st-dot.on{background:var(--grn);animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.viz{position:relative;height:110px;background:var(--s2);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #2a2a3e}
+.viz-label{color:var(--dim);font-size:.72rem}
+.rip{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--ac);opacity:.6;animation:rip .55s ease-out forwards}
+@keyframes rip{0%{transform:scale(.5);opacity:.7}100%{transform:scale(3);opacity:0}}
+.sm{background:none;border:1px solid #2a2a3e;border-radius:8px;padding:8px 12px;color:var(--dim);font-size:.73rem;cursor:pointer;transition:.2s}
+.sm:hover{border-color:var(--ac);color:var(--txt)}
+.bottom-row{display:flex;gap:8px;flex-wrap:wrap}
+.footer{margin-top:18px;font-size:.68rem;color:var(--dim)}
+.slot-ind{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600}
+.slot-dot{width:10px;height:10px;border-radius:50%;transition:.3s}
+.slot-dot.s1{background:var(--grn);box-shadow:0 0 8px var(--grng)}
+.slot-dot.s0{background:var(--red);box-shadow:0 0 8px var(--redg)}
+</style>
 </head>
-
 <body>
+<h1>Dashboard</h1>
+<p class="sub">System overview &mdash; performance metrics</p>
+<div class="card">
+  <div class="conn"><div class="conn-dot" id="connDot"></div><span id="connText">Connecting...</span></div>
 
-  <h1>Dashboard</h1>
-  <p class="sub">System overview &mdash; performance metrics</p>
+  <div class="stats">
+    <div class="sb"><div class="l">Clicks</div><div class="v ac" id="vClicks">0</div></div>
+    <div class="sb"><div class="l">CPS</div><div class="v gr" id="vCps">0</div></div>
+    <div class="sb"><div class="l">Elapsed</div><div class="v" id="vTime">0:00</div></div>
+    <div class="sb"><div class="l">Slot</div><div class="v" id="vSlot"><span class="slot-ind"><span class="slot-dot s0" id="slotDot"></span><span id="slotText">-</span></span></div></div>
+  </div>
 
-  <div class="card">
-    <div class="conn">
-      <div class="conn-dot" id="connDot"></div><span id="connText">Connecting...</span>
-    </div>
-    <div class="stats">
-      <div class="sb">
-        <div class="l">Total Clicks</div>
-        <div class="v ac" id="vClicks">0</div>
+  <div class="cg">
+    <div class="row"><label>CPS Range</label><span class="hint" id="cpsHint">8 - 13 cps</span></div>
+    <div class="range-pair">
+      <div class="cg">
+        <div class="row"><label style="font-size:.68rem">Min</label><span class="hint" id="cMinH">8</span></div>
+        <input type="range" id="cMinSlider" min="1" max="25" value="8">
       </div>
-      <div class="sb">
-        <div class="l">CPS</div>
-        <div class="v gr" id="vCps">0</div>
+      <div class="cg">
+        <div class="row"><label style="font-size:.68rem">Max</label><span class="hint" id="cMaxH">13</span></div>
+        <input type="range" id="cMaxSlider" min="1" max="25" value="13">
       </div>
-      <div class="sb">
-        <div class="l">Elapsed</div>
-        <div class="v" id="vTime">0:00</div>
-      </div>
-    </div>
-
-    <div class="cg">
-      <div class="row"><label>Click Speed</label><span class="hint" id="spdHint">10 clicks/sec</span></div>
-      <input type="range" id="spdSlider" min="1" max="200" value="10">
-    </div>
-
-    <div class="cg">
-      <div class="row"><label>Humanize</label><span class="hint" id="humHint">50%</span></div>
-      <input type="range" id="humSlider" min="0" max="100" value="50">
-    </div>
-
-    <div class="cg">
-      <label>Mode</label>
-      <div class="btn-row">
-        <button class="chip on" data-mode="toggle">Toggle</button>
-        <button class="chip" data-mode="hold">Hold</button>
-      </div>
-    </div>
-
-    <div class="cg">
-      <label>Hotkey</label>
-      <div class="hk-row">
-        <div class="hk-key" id="hkDisp">F6</div>
-        <button class="link-btn" id="hkRebind">rebind</button>
-      </div>
-    </div>
-
-    <button class="big" id="toggleBtn">Start Autoclicker</button>
-
-    <div class="st">
-      <div class="st-dot" id="stDot"></div><span id="stText">Idle</span>
-    </div>
-    <div class="viz" id="viz"><span class="viz-label">Click Visualizer</span></div>
-
-    <div class="bottom-row">
-      <button class="sm" onclick="window.location.href='/api/download'">Download Stealth Script</button>
-      <button class="sm" id="resetBtn">Reset</button>
-      <button class="sm" id="killBtn" style="margin-left:auto">Kill Server</button>
     </div>
   </div>
 
-  <script>
-    (() => {
-      const API = `http://127.0.0.1:47391`;
-      const $ = id => document.getElementById(id);
-      let running = false, listening = false, prevClicks = 0, eTimer = null, elapsed = 0;
+  <div class="cg">
+    <div class="row"><label>Humanize</label><span class="hint" id="humHint">50%</span></div>
+    <input type="range" id="humSlider" min="0" max="100" value="50">
+  </div>
 
-      async function api(path, body) {
-        try {
-          const opts = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
-          const r = await fetch(API + path, opts);
-          const j = await r.json();
-          $('connDot').classList.add('ok'); $('connText').textContent = 'Secure Connection Active';
-          return j;
-        } catch (e) { $('connDot').classList.remove('ok'); $('connText').textContent = 'Backend Offline'; return null; }
-      }
+  <div class="cg">
+    <label>Hotkey</label>
+    <div class="hk-row">
+      <div class="hk-key" id="hkDisp">F6</div>
+      <button class="link-btn" id="hkRebind">rebind</button>
+    </div>
+  </div>
 
-      function syncUI(s) {
-        if (!s) return;
-        const wasRunning = running; running = s.running;
-        if (s.totalClicks > prevClicks) { for (let i = 0; i < Math.min(s.totalClicks - prevClicks, 5); i++) ripple(); }
-        prevClicks = s.totalClicks;
-        $('vClicks').textContent = s.totalClicks.toLocaleString();
-        $('vCps').textContent = running ? s.cps : 0;
-        $('toggleBtn').textContent = running ? 'Stop Autoclicker' : 'Start Autoclicker';
-        $('toggleBtn').classList.toggle('on', running);
-        $('stDot').classList.toggle('on', running);
-        $('stText').textContent = running ? 'Running' : 'Idle';
-        if (running && !wasRunning) { elapsed = 0; eTimer = setInterval(() => { elapsed++; $('vTime').textContent = Math.floor(elapsed / 60) + ':' + String(elapsed % 60).padStart(2, '0') }, 1000); }
-        if (!running && wasRunning) { clearInterval(eTimer); eTimer = null; }
-        if (!listening) $('hkDisp').textContent = s.hotkey;
-      }
+  <button class="big" id="toggleBtn">Start Autoclicker</button>
 
-      function ripple() {
-        const el = document.createElement('div'); el.className = 'rip';
-        const r = $('viz').getBoundingClientRect();
-        el.style.left = Math.random() * (r.width - 18) + 'px'; el.style.top = Math.random() * (r.height - 18) + 'px';
-        $('viz').appendChild(el); el.onanimationend = () => el.remove();
-      }
+  <div class="st"><div class="st-dot" id="stDot"></div><span id="stText">Idle</span></div>
+  <div class="viz" id="viz"><span class="viz-label">Click Visualizer</span></div>
 
-      setInterval(async () => syncUI(await api('/api/status')), 200);
+  <div class="bottom-row">
+    <button class="sm" id="resetBtn">Reset</button>
+    <button class="sm" id="killBtn" style="margin-left:auto">Kill Server</button>
+  </div>
+</div>
+<script>
+(()=>{
+const API='http://127.0.0.1:47391';
+const $=id=>document.getElementById(id);
+let running=false,listening=false,prevClicks=0,eTimer=null,elapsed=0;
 
-      $('spdSlider').oninput = () => { $('spdHint').textContent = $('spdSlider').value + ' clicks/sec'; api('/api/configure', { cps: +$('spdSlider').value }); };
-      $('humSlider').oninput = () => { $('humHint').textContent = $('humSlider').value + '%'; api('/api/configure', { humanize: +$('humSlider').value }); };
-      $('toggleBtn').onclick = () => api('/api/toggle');
-      $('resetBtn').onclick = () => { elapsed = 0; $('vTime').textContent = '0:00'; api('/api/reset'); };
-      $('killBtn').onclick = () => { if (confirm('Kill background server?')) fetch(API + '/api/kill'); };
+async function api(path,body){
+  try{
+    const opts=body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{};
+    const r=await fetch(API+path,opts);
+    const j=await r.json();
+    $('connDot').classList.add('ok');$('connText').textContent='Connected';
+    return j;
+  }catch(e){$('connDot').classList.remove('ok');$('connText').textContent='Backend Offline';return null;}
+}
 
-      // Rebind Logic
-      const KEY_MAP = { ' ': 'SPACE', 'Enter': 'ENTER', 'Tab': 'TAB', 'Escape': 'ESC', 'ArrowUp': 'UP', 'ArrowDown': 'DOWN', 'ArrowLeft': 'LEFT', 'ArrowRight': 'RIGHT' };
-      $('hkRebind').onclick = (e) => { e.stopPropagation(); listening = true; $('hkDisp').textContent = '...'; $('hkDisp').classList.add('listen'); };
-      document.onkeydown = async (e) => {
-        if (!listening) return;
-        e.preventDefault();
-        if (['Control', 'Shift', 'Alt'].includes(e.key)) return;
-        let k = e.key.toUpperCase();
-        if (e.key.startsWith('F') && e.key.length <= 3) k = e.key.toUpperCase();
-        else if (e.key.length > 1) k = KEY_MAP[e.key] || null;
-        if (k) { listening = false; $('hkDisp').classList.remove('listen'); $('hkDisp').textContent = k; await api('/api/configure', { hotkey: k }); }
-      };
-    })();
-  </script>
+function syncUI(s){
+  if(!s)return;
+  const wasRunning=running;running=s.running;
+  if(s.totalClicks>prevClicks){for(let i=0;i<Math.min(s.totalClicks-prevClicks,5);i++)ripple();}
+  prevClicks=s.totalClicks;
+  $('vClicks').textContent=s.totalClicks.toLocaleString();
+  $('vCps').textContent=running?Math.round((s.cps_min+s.cps_max)/2):0;
+  $('toggleBtn').textContent=running?'Stop Autoclicker':'Start Autoclicker';
+  $('toggleBtn').classList.toggle('on',running);
+  $('stDot').classList.toggle('on',running);
+  $('stText').textContent=running?(s.slot===1?'Running (Slot 1)':'Paused (Wrong Slot)'):'Idle';
+
+  // Slot indicator
+  $('slotDot').className='slot-dot '+(s.slot===1?'s1':'s0');
+  $('slotText').textContent=s.slot===1?'Slot 1':'Other';
+
+  // Sync sliders on first load
+  if(!syncUI._init){
+    syncUI._init=true;
+    $('cMinSlider').value=s.cps_min;$('cMinH').textContent=s.cps_min;
+    $('cMaxSlider').value=s.cps_max;$('cMaxH').textContent=s.cps_max;
+    $('cpsHint').textContent=s.cps_min+' - '+s.cps_max+' cps';
+    $('humSlider').value=s.humanize;$('humHint').textContent=s.humanize+'%';
+  }
+
+  if(!listening)$('hkDisp').textContent=s.hotkey;
+  if(running&&!wasRunning){elapsed=0;eTimer=setInterval(()=>{elapsed++;$('vTime').textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')},1000);}
+  if(!running&&wasRunning){clearInterval(eTimer);eTimer=null;}
+}
+
+function ripple(){
+  const el=document.createElement('div');el.className='rip';
+  const r=$('viz').getBoundingClientRect();
+  el.style.left=Math.random()*(r.width-18)+'px';el.style.top=Math.random()*(r.height-18)+'px';
+  $('viz').appendChild(el);el.onanimationend=()=>el.remove();
+}
+
+setInterval(async()=>syncUI(await api('/api/status')),200);
+
+function updateCps(){
+  let mn=+$('cMinSlider').value,mx=+$('cMaxSlider').value;
+  if(mn>mx){$('cMaxSlider').value=mn;mx=mn;}
+  $('cMinH').textContent=mn;$('cMaxH').textContent=mx;
+  $('cpsHint').textContent=mn+' - '+mx+' cps';
+  api('/api/configure',{cps_min:mn,cps_max:mx});
+}
+$('cMinSlider').oninput=updateCps;
+$('cMaxSlider').oninput=updateCps;
+
+$('humSlider').oninput=()=>{$('humHint').textContent=$('humSlider').value+'%';api('/api/configure',{humanize:+$('humSlider').value});};
+$('toggleBtn').onclick=()=>api('/api/toggle');
+$('resetBtn').onclick=()=>{elapsed=0;$('vTime').textContent='0:00';api('/api/reset');};
+$('killBtn').onclick=()=>{if(confirm('Kill background server?'))fetch(API+'/api/kill');};
+
+const KEY_MAP={' ':'SPACE','Enter':'ENTER','Tab':'TAB','Escape':'ESC','ArrowUp':'UP','ArrowDown':'DOWN','ArrowLeft':'LEFT','ArrowRight':'RIGHT'};
+$('hkRebind').onclick=(e)=>{e.stopPropagation();listening=true;$('hkDisp').textContent='...';$('hkDisp').classList.add('listen');};
+document.onkeydown=async(e)=>{
+  if(!listening)return;e.preventDefault();
+  if(['Control','Shift','Alt'].includes(e.key))return;
+  let k=e.key.toUpperCase();
+  if(e.key.startsWith('F')&&e.key.length<=3)k=e.key.toUpperCase();
+  else if(e.key.length>1)k=KEY_MAP[e.key]||null;
+  if(k){listening=false;$('hkDisp').classList.remove('listen');$('hkDisp').textContent=k;await api('/api/configure',{hotkey:k});}
+};
+})();
+</script>
 </body>
-
 </html>
