@@ -169,8 +169,8 @@ $('cMinSlider').oninput=updateCps;
 $('cMaxSlider').oninput=updateCps;
 
 $('humSlider').oninput=()=>{$('humHint').textContent=$('humSlider').value+'%';api('/api/configure',{humanize:+$('humSlider').value});};
-$('toggleBtn').onclick=()=>api('/api/toggle');
-$('resetBtn').onclick=()=>{elapsed=0;$('vTime').textContent='0:00';api('/api/reset');};
+$('toggleBtn').onclick=()=>api('/api/toggle',{});
+$('resetBtn').onclick=()=>{elapsed=0;$('vTime').textContent='0:00';api('/api/reset',{});};
 $('killBtn').onclick=()=>{if(confirm('Kill background server?'))fetch(API+'/api/kill');};
 
 const KEY_MAP={' ':'SPACE','Enter':'ENTER','Tab':'TAB','Escape':'ESC','ArrowUp':'UP','ArrowDown':'DOWN','ArrowLeft':'LEFT','ArrowRight':'RIGHT'};
